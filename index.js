@@ -9,8 +9,12 @@ const getTime = (timezone) => {
   const currentDate = new Date();
   // get exact time from current date
   const currentTime = currentDate.getTime();
-  console.log(currentTime);
-  console.log(currentDate.getTimezoneOffset());
+
+  const localTimezoneOffset = currentDate.getTime() + 60000;
+  const utcTime = currentTime + localTimezoneOffset;
+
+  const timeAdjusted = (utcTime + localTimezoneOffset) * 1000;
+  return new Date(timeAdjusted).toLocaleTimeString("en-US")
 }
 
 request (wetherUrl, (error, response, body) => {
