@@ -10,10 +10,10 @@ const getTime = (timezone) => {
   // get exact time from current date
   const currentTime = currentDate.getTime();
 
-  const localTimezoneOffset = currentDate.getTime() + 60000;
+  const localTimezoneOffset = currentDate.getTimezoneOffset() * 60000;
   const utcTime = currentTime + localTimezoneOffset;
 
-  const timeAdjusted = (utcTime + localTimezoneOffset) * 1000;
+  const timeAdjusted = utcTime + timezone * 1000;
   return new Date(timeAdjusted).toLocaleTimeString("en-US")
 }
 
@@ -21,10 +21,9 @@ request (wetherUrl, (error, response, body) => {
   try {
     const result = JSON.parse(body);
     const time = getTime(result.timezone);
-    console.log(result)
-    console.log(time)
+    console.log(time);
   } catch {
-    const error = JSON.parse(error);
+    const err = JSON.parse(error);
     if (err == null) {
       console.log('here')
     }
