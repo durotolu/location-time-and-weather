@@ -1,12 +1,15 @@
 const dontenv = require("dotenv").config();
 const request = require("request");
 
-const location = process.argv[2];
+const cmdLineArgs = process.argv;
+const location = cmdLineArgs.splice(2)
+console.log(location)
 
 if (!location) {
   console.log("kindly provide location(s)")
   return;
 }
+
 
 const wetherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`;
 
