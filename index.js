@@ -4,7 +4,7 @@ const request = require("request");
 const location = process.argv[2];
 
 if (!location) {
-  console.log("Kindly provide location(s)")
+  console.log("kindly provide location(s)")
   return;
 }
 
@@ -25,23 +25,16 @@ const getTime = (timezone) => {
 request (wetherUrl, (error, response, body) => {
   try {
     const result = JSON.parse(body);
+    const name = result.name
+    const temperature = result.main.temp
     const time = getTime(result.timezone);
-
-    if (result.cod !== '200') {
-      console.log(result.message);
-      return;
-    } else {
-      const name = result.name
-      const temperature = result.main.temp
-      console.log({
-        temp: result.n,
-      });
-    }
+    console.log({
+      name,
+      time,
+      temperature
+    });
   } catch {
-    const errorMsg = JSON.parse(error);
-    if (errorMsg == null) {
-      console.log('here')
-    }
-    console.log('gthing')
+    console.log("City not found")
+    return
   }
 })
