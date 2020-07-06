@@ -1,17 +1,14 @@
 const dontenv = require("dotenv").config();
-const request = require("request");
+const axios = require("axios");
 
 const cmdLineArgs = process.argv;
-const location = cmdLineArgs.splice(2)
-console.log(location)
+const locations = cmdLineArgs.splice(2)
+console.log(locations)
 
-if (!location) {
+if (!locations) {
   console.log("kindly provide location(s)")
   return;
 }
-
-
-const wetherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`;
 
 const getTime = (timezone) => {
   const currentDate = new Date();
@@ -25,19 +22,18 @@ const getTime = (timezone) => {
   return new Date(timeAdjusted).toLocaleTimeString("en-US")
 }
 
-request (wetherUrl, (error, response, body) => {
-  try {
-    const result = JSON.parse(body);
-    const name = result.name
-    const temperature = result.main.temp
-    const time = getTime(result.timezone);
-    console.log({
-      name,
-      time,
-      temperature
-    });
-  } catch {
-    console.log("City not found")
-    return
-  }
+const arr = []
+
+locations.forEach((location) => {
+  const locationName = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`);
+  arr.push(locationName)
 })
+
+axios.all(arr)
+  .then(axios.spread((...res) => {
+    res.forEach((location) => {
+      console.log(location.data)
+    })
+  })).catch(err => {
+    console.log(err)
+  })

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/durotolu/location-time-and-weather/issues"
   },
-  "homepage": "https://github.com/durotolu/location-time-and-weather#readme"
+  "homepage": "https://github.com/durotolu/location-time-and-weather#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
 }
