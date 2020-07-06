@@ -31,14 +31,24 @@ locations.forEach((location) => {
 axios.all(locationsData)
   .then(axios.spread((...res) => {
     res.forEach((location) => {
-      const name = location.data.name;
-      const time = getTime(location.data.timezone);
+      const locationName = location.data.name;
+      const currentTime = getTime(location.data.timezone);
       const temperature = location.data.main.temp;
-      console.log({
-        name,
-        time,
-        temperature
-      });
+      const description = location.data.weather[0].description;
+      const main = location.data.main;
+      const visibility = location.data.visibility;
+      const windSpeed = location.data.wind.speed;
+      const locationWeatherInfo = {
+        locationName,
+        currentTime,
+        weather: {
+          description,
+          ...main,
+          visibility,
+          windSpeed
+        }
+      };
+      console.log(locationWeatherInfo)
     });
   })).catch(err => {
     if (err.response) {
