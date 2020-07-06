@@ -4,7 +4,7 @@
   "description": "Logs the current time and weather for locations given.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/durotolu/location-time-and-weather#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "jest": "^26.1.0",
+    "supertest": "^4.0.2"
   }
 }

@@ -6,26 +6,24 @@ const locations = cmdLineArgs.splice(2);
 
 if (!locations) {
   console.log("kindly provide location(s)");
-  return;
-}
-
-const getTime = (timezone) => {
-  const currentDate = new Date();
-  // get exact time from current date
-  const currentTime = currentDate.getTime();
-
-  const localTimezoneOffset = currentDate.getTimezoneOffset() * 60000;
-  const utcTime = currentTime + localTimezoneOffset;
-
-  const timeAdjusted = utcTime + timezone * 1000;
-  return new Date(timeAdjusted).toLocaleTimeString("en-US");
-}
-
-const locationsData = []
-
-locations.forEach((location) => {
-  const locationData = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`);
-  locationsData.push(locationData);
+} else {
+  const getTime = (timezone) => {
+    const currentDate = new Date();
+    // get exact time from current date
+    const currentTime = currentDate.getTime();
+    
+    const localTimezoneOffset = currentDate.getTimezoneOffset() * 60000;
+    const utcTime = currentTime + localTimezoneOffset;
+    
+    const timeAdjusted = utcTime + timezone * 1000;
+    return new Date(timeAdjusted).toLocaleTimeString("en-US");
+  }
+  
+  const locationsData = []
+  
+  locations.forEach((location) => {
+    const locationData = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`);
+    locationsData.push(locationData);
 })
 
 axios.all(locationsData)
@@ -57,3 +55,4 @@ axios.all(locationsData)
       console.log({ 'an error occured': 'kindly verify internet connectivity and try again' });
     }
   });
+}
