@@ -57,7 +57,7 @@ function getWeatherInfo(locationArray) {
       });
     })).catch(err => {
       if (err.response) {
-        console.log({ 'an error occured': err.response.data.message });
+        console.log({ 'seperate locations with commas (without spaces)': `${err.response.data.message}` });
       } else {
         console.log({ 'an error occured': 'kindly verify internet connectivity and try again' });
       };
