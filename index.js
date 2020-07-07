@@ -1,46 +1,24 @@
 const dontenv = require("dotenv").config();
 const axios = require("axios");
+const helpers = require('./helpers')
 
-const formatInputs = (arr) => {
-  const stringInputs = arr.reduce((acc, curr) => (acc += ` ${curr}`));
-  return stringInputs.split(',');
-};
+const [, , ...args] = process.argv;
+const locations = helpers.formatInputs([...args]);
 
-const cmdLineArgs = process.argv;
-const [, , ...args] = cmdLineArgs;
-const locations = formatInputs([...args]);
-
-function getWeatherInfo(locationArray) {
-
+function getTimeWeather(locationArray) {
   if (!locationArray) {
     console.log("kindly provide location(s)");
   } else {
-    const getTime = (timezone) => {
-      const currentDate = new Date();
-      // get exact time from current date
-      const currentTime = currentDate.getTime();
-      
-      const localTimezoneOffset = currentDate.getTimezoneOffset() * 60000;
-      const utcTime = currentTime + localTimezoneOffset;
-      
-      const timeAdjusted = utcTime + timezone * 1000;
-      return new Date(timeAdjusted).toLocaleTimeString("en-US");
-    }
-    
-    const locationsData = [];
-    
-    locationArray.forEach((location) => {
-      const locationData = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`);
-      locationsData.push(locationData);
-    });
-    
+    console.log("request is processing...");
+    const locationsData = helpers.getWeatherInfo(locationArray);
+
     axios.all(locationsData)
     .then(axios.spread((...res) => {
       res.forEach((location) => {
         const locationName = location.data.name;
-        const currentTime = getTime(location.data.timezone);
+        const currentTime = helpers.getTimeFromTimezone(location.data.timezone);
         const description = location.data.weather[0].description;
-        const main = location.data.main;
+        const tempPressureHumidity = location.data.main;
         const visibility = location.data.visibility;
         const windSpeed = location.data.wind.speed;
         const locationWeatherInfo = {
@@ -48,7 +26,7 @@ function getWeatherInfo(locationArray) {
           currentTime,
           weather: {
             description,
-            ...main,
+            ...tempPressureHumidity,
             visibility,
             windSpeed
           }
@@ -57,7 +35,7 @@ function getWeatherInfo(locationArray) {
       });
     })).catch(err => {
       if (err.response) {
-        console.log({ 'seperate locations with commas (without spaces)': `${err.response.data.message}` });
+        console.log({ 'seperate locations with commas (without spaces)': err.response.data.message });
       } else {
         console.log({ 'an error occured': 'kindly verify internet connectivity and try again' });
       };
@@ -65,6 +43,5 @@ function getWeatherInfo(locationArray) {
   };
 };
 
-getWeatherInfo(locations);
-
-module.exports = getWeatherInfo;
+getTimeWeather(locations);
+module.exports = getTimeWeather;
