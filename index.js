@@ -1,8 +1,14 @@
 const dontenv = require("dotenv").config();
 const axios = require("axios");
 
+const formatInputs = (arr) => {
+  const stringInputs = arr.reduce((acc, curr) => (acc += ` ${curr}`));
+  return stringInputs.split(',');
+};
+
 const cmdLineArgs = process.argv;
-const locations = cmdLineArgs.splice(2);
+const [, , ...args] = cmdLineArgs;
+const locations = formatInputs([...args]);
 
 function getWeatherInfo(locationArray) {
 
@@ -21,12 +27,12 @@ function getWeatherInfo(locationArray) {
       return new Date(timeAdjusted).toLocaleTimeString("en-US");
     }
     
-    const locationsData = []
+    const locationsData = [];
     
     locationArray.forEach((location) => {
       const locationData = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`);
       locationsData.push(locationData);
-    })
+    });
     
     axios.all(locationsData)
     .then(axios.spread((...res) => {
@@ -47,16 +53,18 @@ function getWeatherInfo(locationArray) {
             windSpeed
           }
         };
-        console.log(locationWeatherInfo)
+        console.log(locationWeatherInfo);
       });
     })).catch(err => {
       if (err.response) {
         console.log({ 'an error occured': err.response.data.message });
       } else {
         console.log({ 'an error occured': 'kindly verify internet connectivity and try again' });
-      }
+      };
     });
-  }
-}
+  };
+};
 
-getWeatherInfo(locations)
+getWeatherInfo(locations);
+
+module.exports = getWeatherInfo;
