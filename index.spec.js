@@ -1,10 +1,13 @@
-const index = require('./index');
 const request = require('supertest');
+const axios = require('axios');
+// const getWeatherInfo = require('./index');
+const helpers = require('./helpers');
 
-describe('index', () => {
-  describe('[GET] / endpoint', () => {
-    test('a key is provided for the api', () => {
-      expect(process.env.KEY).toBe('771dcef478ae5faab8ee377e738531eb')
-    })
-  })
-})
+jest.mock("axios");
+// const mockedAxios = axios as jest.mockedAxios
+// axios.get.mockResolvedValue(resp);
+
+test('formatInputs returns array of locations', async () => {
+  const response = helpers.formatInputs([ 'Lagos,New', 'York,New', 'Zealand,London,Texas,New', 'Jersey' ]);
+  expect(response).toEqual(["Lagos", "New York", "New Zealand", "London", "Texas", "New Jersey"])
+});
