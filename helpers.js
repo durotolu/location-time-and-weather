@@ -24,7 +24,7 @@ function getTimeFromTimezone(timezone) {
 function getWeatherInfo(locations) {
   const locationsData = [];
   locations.forEach((location, index) => {
-    const locationData = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.KEY}`);
+    const locationData = axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=771dcef478ae5faab8ee377e738531eb`);
     locationsData[index] = locationData;
   });
   return locationsData
