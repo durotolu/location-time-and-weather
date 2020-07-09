@@ -9,7 +9,7 @@ function getTimeWeather(locationArray) {
   if (!locationArray) {
     console.log("kindly provide location(s)");
   } else {
-    console.log("request is processing...");
+    console.log("request processing...");
     const locationsData = helpers.getWeatherInfo(locationArray);
 
     axios.all(locationsData)
