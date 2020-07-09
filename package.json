@@ -4,7 +4,8 @@
   "description": "Logs the current time and weather for locations given.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
