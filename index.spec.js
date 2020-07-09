@@ -1,5 +1,3 @@
-const request = require('supertest');
-const axios = require('axios');
 const helpers = require('./helpers');
 
 jest.mock("axios");
@@ -31,6 +29,5 @@ test('getTimeFromTimezone disticts between day and night', () => {
   const currentDate = new Date();
   const localTimezone = currentDate.getTimezoneOffset() * -60;
   const localTime = helpers.getTimeFromTimezone(localTimezone);
-  console.log(typeof(localTime))
   expect(localTime).toMatch(/AM || PM/);
 });
