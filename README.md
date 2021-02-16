@@ -1,7 +1,7 @@
 # Location, Time and Weather
 Logs the current time and weather for locations given.
 
-> Given an array of inputs (location name, postal code), log the current time and weather for those locations.
+> Given an array of inputs (location name, postal code), log the current time and weather for each locations.
 > Example: "./weather New York, 10005, Tokyo, São Paulo, Pluto"
 
 ## Built with Javascript and Axios
